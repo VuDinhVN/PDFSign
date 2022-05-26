@@ -11,33 +11,13 @@
     android:paddingRight="16dp"
     tools:context="vu.dinh.dsa.MainActivity">
 
-
-    <LinearLayout
-        android:id="@+id/file_name_title_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <TextView
-            android:id="@+id/tv_file_name_title"
-            android:layout_width="wrap_content"
-            android:layout_height="5dp"
-            android:layout_marginTop="3dp"
-            android:text=""
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-
-
-    </LinearLayout>
-
     <FrameLayout
         android:id="@+id/file_name_frame"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/file_name_title_frame"
         android:background="@drawable/border"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         android:padding="5dp">
 
         <TextView
@@ -70,12 +50,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp">
+        android:layout_marginTop="160dp">
 
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="match_parent"
-            android:layout_height="440dp" />
+            android:layout_height="410dp" />
     </LinearLayout>
     <TextView
         android:id="@+id/tv_reason_title"
@@ -124,14 +104,14 @@
 
     <FrameLayout
         android:id="@+id/location_frame"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_below="@+id/tv_location_title"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="236dp"
         android:layout_marginLeft="236dp"
-        android:layout_marginTop="-65dp"
+        android:layout_marginTop="-63dp"
         android:background="@drawable/border">
 
         <EditText
@@ -164,7 +144,7 @@
         android:layout_below="@+id/tv_reason_title"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/border">
 
         <EditText
@@ -201,7 +181,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="236dp"
         android:layout_marginLeft="236dp"
-        android:layout_marginTop="-23dp"
+        android:layout_marginTop="-20dp"
         android:background="@drawable/border">
 
         <EditText
@@ -270,6 +250,33 @@
             android:text="Encrypt"
             android:textColor="@android:color/white" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:text="Thông tin Ký"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu Mã hoá"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
     </LinearLayout>
 
 

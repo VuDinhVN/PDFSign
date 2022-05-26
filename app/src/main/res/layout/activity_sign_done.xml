@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:background="#4d94ff"
             android:padding="12dp"
-            android:text="Gửi File PDF"
+            android:text="Chia sẻ file PDF"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
