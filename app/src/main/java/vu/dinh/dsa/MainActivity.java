@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType("application/pdf");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, OPEN_REQUEST_CODE);
+//                viewPDF();
             }
         });
 
@@ -140,6 +143,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void viewPDF() {
+
+        PDFView pdfView = (PDFView) findViewById(R.id.pdfView);
+        pdfView.fromUri(mFileUri)
+                .enableSwipe(true)
+                .swipeHorizontal(true)
+                .enableDoubletap(true)
+                .defaultPage(0)
+                .enableAnnotationRendering(false)
+                .password(null)
+                .scrollHandle(null)
+                .enableAntialiasing(true)
+                .spacing(0)
+                .pageFitPolicy(FitPolicy.WIDTH)
+                .load();
+
+    }
+
     private void initView() {
         ink = (InkView) findViewById(R.id.ink);
         mSignButton = (Button) findViewById(R.id.button_sign);
@@ -148,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         mReasonEditText = (EditText) findViewById(R.id.et_reason);
         mLocationEditText = (EditText) findViewById(R.id.et_location);
         mProgressDialog = new ProgressDialog(this);
+
     }
 
     @Override
@@ -158,6 +180,9 @@ public class MainActivity extends AppCompatActivity {
                     mFileUri = data.getData();
 
                     mFileNameTextView.setText(getFileName(mFileUri));
+                    if(mFileUri != null){
+                        viewPDF();
+                    }
                 } else {
                     Toast.makeText(this, "File action canceled", Toast.LENGTH_SHORT).show();
                 }

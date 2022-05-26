@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DigitalSignatureApp.iml" filepath="$PROJECT_DIR$/.idea/modules/DigitalSignatureApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DigitalSignatureApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DigitalSignatureApp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PDFSign.iml" filepath="$PROJECT_DIR$/.idea/modules/PDFSign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PDFSign.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PDFSign.app.iml" />
     </modules>
   </component>
 </project>
