@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 .swipeHorizontal(true)
                 .enableDoubletap(true)
                 .defaultPage(0)
-                .enableAnnotationRendering(false)
+                .enableAnnotationRendering(true)
                 .password(null)
                 .scrollHandle(null)
                 .enableAntialiasing(true)

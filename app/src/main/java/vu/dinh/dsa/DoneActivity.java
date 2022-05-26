@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -130,71 +133,87 @@ public class DoneActivity extends AppCompatActivity {
         setTitle("Digital Signature PDF");
 
         mSignedFileUri = Uri.fromFile(new File(getIntent().getStringExtra("uri")));
-
-        findViewById(R.id.button_view).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mSignedFileUri != null) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(mSignedFileUri);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "No PDF File!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-        });
+        viewPDF();
+//        findViewById(R.id.button_view).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mSignedFileUri != null) {
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setData(mSignedFileUri);
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "No PDF File!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//            }
+//        });
         findViewById(R.id.button_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                 shareIntent.setType("pdf/*");
-                 shareIntent.putExtra(Intent.EXTRA_STREAM, mSignedFileUri);
-                 startActivity(Intent.createChooser(shareIntent, "Share Document"));
-            }
-        });
-
-        findViewById(R.id.button_enc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Toast.makeText(getApplicationContext(), "Start", Toast.LENGTH_SHORT).show();
-                    FileInputStream inputStream = null;
-// FileOutputStream outputStream = null;
-
-                    inputStream = new FileInputStream(mSignedFileUri.getPath());
-                    File field = new File(mSignedFileUri.getPath());
-
-// outputStream = new FileOutputStream(mSignedFileUri.getPath()+"ENCRYPT.txt");
-                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), ".txt");
-
-
-
-                    EncryptData(mSignedFileUri, file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (GeneralSecurityException e) {
-                    e.printStackTrace();
-                }
+//                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                 shareIntent.setType("pdf/*");
+//                 shareIntent.putExtra(Intent.EXTRA_STREAM, mSignedFileUri);
+//                 startActivity(Intent.createChooser(shareIntent, "Share Document"));
 
             }
         });
+
+//        findViewById(R.id.button_enc).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    Toast.makeText(getApplicationContext(), "Start", Toast.LENGTH_SHORT).show();
+//                    FileInputStream inputStream = null;
+//// FileOutputStream outputStream = null;
+//
+//                    inputStream = new FileInputStream(mSignedFileUri.getPath());
+//                    File field = new File(mSignedFileUri.getPath());
+//
+//// outputStream = new FileOutputStream(mSignedFileUri.getPath()+"ENCRYPT.txt");
+//                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), ".txt");
+//
+//
+//
+//                    EncryptData(mSignedFileUri, file);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchAlgorithmException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchPaddingException e) {
+//                    e.printStackTrace();
+//                } catch (InvalidAlgorithmParameterException e) {
+//                    e.printStackTrace();
+//                } catch (InvalidKeyException e) {
+//                    e.printStackTrace();
+//                } catch (BadPaddingException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalBlockSizeException e) {
+//                    e.printStackTrace();
+//                } catch (GeneralSecurityException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    private void viewPDF(){
+        PDFView pdfView = (PDFView) findViewById(R.id.pdfViews);
+        pdfView.fromUri(mSignedFileUri)
+                .enableSwipe(true)
+                .swipeHorizontal(true)
+                .enableDoubletap(true)
+                .defaultPage(0)
+                .enableAnnotationRendering(true)
+                .password(null)
+                .scrollHandle(null)
+                .enableAntialiasing(true)
+                .spacing(0)
+                .pageFitPolicy(FitPolicy.WIDTH)
+                .load();
     }
 }
