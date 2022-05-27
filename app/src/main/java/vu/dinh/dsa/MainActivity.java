@@ -310,8 +310,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), DoneActivity.class);
 
                 String f = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/signed_" + getFileName(mFileUri);
-
+                String n = "Đã ký thành công file PDF!";
                 i.putExtra("uri", f);
+                i.putExtra("n", n);
                 startActivity(i);
             }
 

@@ -62,9 +62,7 @@ public class DoneActivity extends AppCompatActivity {
         {
             String j =(String) b.get("n");
             Notyfi.setText(j);
-            Notyfi2.setText("File PDF đã được lưu lại, và có thể gửi đi!");
-        } else {
-            Notyfi.setText("Đã ký thành công File PDF!");
+            Notyfi2.setText("File PDF đã được lưu lại và có thể gửi đi!");
         }
         viewPDF();
         findViewById(R.id.button_share).setOnClickListener(new View.OnClickListener() {
