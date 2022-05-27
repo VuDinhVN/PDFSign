@@ -40,22 +40,22 @@
             android:layout_gravity="right"
             android:src="@mipmap/ic_folder"
             />
-        <ImageView
-            android:id="@+id/iv_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_view" />
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_browse_cer"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@mipmap/ic_view" />-->
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="160dp">
+        android:layout_marginTop="190dp">
 
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="match_parent"
-            android:layout_height="410dp" />
+            android:layout_height="390dp" />
     </LinearLayout>
     <TextView
         android:id="@+id/tv_reason_title"
@@ -69,7 +69,7 @@
 
     <FrameLayout
         android:id="@+id/reason_frame"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="40dp"
         android:layout_below="@+id/tv_reason_title"
         android:layout_alignParentStart="true"
@@ -104,22 +104,22 @@
 
     <FrameLayout
         android:id="@+id/location_frame"
-        android:layout_width="250dp"
+        android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_below="@+id/tv_location_title"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="236dp"
+        android:layout_marginStart="200dp"
         android:layout_marginLeft="236dp"
         android:layout_marginTop="-63dp"
         android:background="@drawable/border">
 
         <EditText
-            android:id="@+id/pass1"
+            android:id="@+id/et_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
-            android:hint="Password 1"
+            android:hint="Nhập Nơi Ký"
             android:inputType="textNoSuggestions"
             android:padding="0dp"
             android:textColorHint="#ababab"
@@ -136,68 +136,6 @@
         android:text=""
         android:textSize="16sp"
         android:textStyle="bold" />
-
-    <FrameLayout
-        android:id="@+id/reason_frame2"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/tv_reason_title"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/border">
-
-        <EditText
-            android:id="@+id/et_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:hint="Nhập Lý Nơi Ký"
-            android:inputType="textNoSuggestions"
-            android:padding="0dp"
-            android:textColorHint="#ababab"
-            android:textSize="14sp"
-            android:textStyle="italic" />
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tv_location_title2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reason_frame"
-        android:layout_marginTop="8dp"
-        android:text=""
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-    <FrameLayout
-        android:id="@+id/location_frame2"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/tv_location_title"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="236dp"
-        android:layout_marginLeft="236dp"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/border">
-
-        <EditText
-            android:id="@+id/pass2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:hint="Password 2"
-            android:inputType="textNoSuggestions"
-            android:padding="0dp"
-            android:textColorHint="#ababab"
-            android:textSize="14sp"
-            android:textStyle="italic" />
-
-    </FrameLayout>
-
 
 
     <com.simplify.ink.InkView
@@ -241,13 +179,13 @@
             android:text="Ký PDF"
             android:textColor="@android:color/white" />
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/encrypt"
+            android:id="@+id/button_enc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/colored_button"
             android:layout_marginLeft="3dp"
-            android:text="Encrypt"
+            android:text="Mã Hoá"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
@@ -255,9 +193,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="50dp"
-        android:weightSum="2"
         android:layout_alignParentBottom="true"
         >
 
@@ -265,18 +202,49 @@
             android:id="@+id/textView2"
             android:layout_width="235dp"
             android:layout_height="wrap_content"
-            android:text="Thông tin Ký"
+            android:text="Nhập thông tin để ký PDF"
             android:textSize="16sp"
             android:textStyle="bold"/>
-
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Mật khẩu Mã hoá"
+            android:text="Chọn File Certificate  để mã hoá file PDF"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_marginTop="50dp"
             />
+
+
+
+        <FrameLayout
+            android:id="@+id/file_name_frame_cer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_file_name_cer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:hint="Chọn File Certificate"
+                android:textColorHint="#ababab"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+
+            <ImageView
+                android:id="@+id/iv_browse_cer"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:src="@mipmap/cer" />
+        </FrameLayout>
+
     </LinearLayout>
 
 

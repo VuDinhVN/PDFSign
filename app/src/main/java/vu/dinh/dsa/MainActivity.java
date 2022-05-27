@@ -1,5 +1,6 @@
 package vu.dinh.dsa;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -18,6 +19,7 @@ import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.security.KeyChainException;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.security.BouncyCastleDigest;
 import com.itextpdf.text.pdf.security.DigestAlgorithms;
 import com.itextpdf.text.pdf.security.ExternalDigest;
@@ -43,6 +46,7 @@ import com.simplify.ink.InkView;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,19 +55,23 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int OPEN_REQUEST_CODE = 123;
+    private static final int OPEN_REQUEST_ENC = 234;
 
     private InkView ink;
 
     private TextView mFileNameTextView;
+    private TextView mFileNameTextCer;
 
     private Uri mFileUri;
-
-    private ImageView mViewPDFImageView;
+    private Uri mFileUriEnc;
 
     private EditText mReasonEditText;
 
@@ -73,11 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mSignButton;
 
+    private Button mEnc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Digital Signature PDF");
+        setTitle("PDFSign");
         initView();
 
 
@@ -91,20 +101,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mViewPDFImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFileUri != null) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(mFileUri);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "No PDF File!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-        });
-
 
         findViewById(R.id.iv_browse_file).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +109,31 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType("application/pdf");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, OPEN_REQUEST_CODE);
-//                viewPDF();
+            }
+        });
+
+        findViewById(R.id.iv_browse_cer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("application/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, OPEN_REQUEST_ENC);
+            }
+        });
+        mEnc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mFileUriEnc == null) {
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn file Certificate!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    Toast.makeText(getApplicationContext(), "Đang mã hoá File PDF!", Toast.LENGTH_SHORT).show();
+                    enc();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -121,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mFileUri == null) {
-                    Toast.makeText(getApplicationContext(), "Please choose a pdf file!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn file PDF!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 saveImage();
@@ -132,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                                     Handler h = new Handler(Looper.getMainLooper());
                                     h.post(new Runnable() {
                                         public void run() {
-                                            showProgressDialog();
+                                            showProgressDialog("Đã ký File PDF");
                                         }
                                     });
                                     sign(alias, mReasonEditText.getText().toString(), mLocationEditText.getText().toString());
@@ -141,6 +161,34 @@ public class MainActivity extends AppCompatActivity {
                         }, null, null, null, -1, null);
             }
         });
+    }
+
+    @SuppressLint("LongLogTag")
+    public Certificate getPublicCertificate(Uri path) throws IOException, CertificateException {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            X509Certificate cert = (X509Certificate) cf.generateCertificate(getContentResolver().openInputStream(mFileUriEnc));
+            return  cert;
+    }
+
+    private void enc () throws Exception{
+        Security.addProvider(new BouncyCastleProvider());
+        Certificate cert = getPublicCertificate(mFileUriEnc);
+
+        File tmp = File.createTempFile("eid", ".pdf", getCacheDir());
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "encrypt_" + getFileName(mFileUri));
+        FileOutputStream fos = new FileOutputStream(file);
+
+        PdfReader reader = new PdfReader(getContentResolver().openInputStream(mFileUri));
+        PdfStamper stamper = new PdfStamper(reader, fos);
+        stamper.setEncryption( new Certificate[]{cert}, new int[]{PdfWriter.ALLOW_PRINTING}, PdfWriter.ENCRYPTION_AES_128);
+        stamper.close();
+        reader.close();
+        Intent i = new Intent(getApplicationContext(), DoneActivity.class);
+        String f = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/encrypt_" + getFileName(mFileUri);
+        String n = "Đã mã hoá thành công file PDF!";
+        i.putExtra("uri", f);
+        i.putExtra("n", n);
+        startActivity(i);
     }
 
     private void viewPDF() {
@@ -164,8 +212,9 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         ink = (InkView) findViewById(R.id.ink);
         mSignButton = (Button) findViewById(R.id.button_sign);
+        mEnc = (Button) findViewById(R.id.button_enc);
         mFileNameTextView = (TextView) findViewById(R.id.tv_file_name);
-        mViewPDFImageView = (ImageView) findViewById(R.id.iv_view);
+        mFileNameTextCer = (TextView) findViewById(R.id.tv_file_name_cer);
         mReasonEditText = (EditText) findViewById(R.id.et_reason);
         mLocationEditText = (EditText) findViewById(R.id.et_location);
         mProgressDialog = new ProgressDialog(this);
@@ -178,13 +227,20 @@ public class MainActivity extends AppCompatActivity {
             case OPEN_REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK) {
                     mFileUri = data.getData();
-
                     mFileNameTextView.setText(getFileName(mFileUri));
                     if(mFileUri != null){
                         viewPDF();
                     }
                 } else {
-                    Toast.makeText(this, "File action canceled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Đã huỷ chọn file!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case OPEN_REQUEST_ENC:
+                if (resultCode == Activity.RESULT_OK) {
+                    mFileUriEnc = data.getData();
+                    mFileNameTextCer.setText(getFileName(mFileUriEnc));
+                } else {
+                    Toast.makeText(this, "Đã huỷ chọn file!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -253,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgressDialog.dismiss();
                 Intent i = new Intent(getApplicationContext(), DoneActivity.class);
 
-                String f = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/sign_" + getFileName(mFileUri);
+                String f = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/signed_" + getFileName(mFileUri);
 
                 i.putExtra("uri", f);
                 startActivity(i);
@@ -280,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                     ExternalSignature pks = new CustomPrivateKeySignature(privateKey, DigestAlgorithms.SHA256, provider.getName());
 
                     File tmp = File.createTempFile("eid", ".pdf", getCacheDir());
-                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "sign_" + getFileName(mFileUri));
+                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "signed_" + getFileName(mFileUri));
                     FileOutputStream fos = new FileOutputStream(file);
 
                     sign(mFileUri, fos, chain, pks, DigestAlgorithms.SHA256, provider.getName(), CryptoStandard.CADES, reason, location);
@@ -326,11 +382,10 @@ public class MainActivity extends AppCompatActivity {
         CustomMakeSignature.signDetached(appearance, digest, pk, chain, null, null, null, 0, subfilter);
     }
 
-    private void showProgressDialog() {
+    private void showProgressDialog(String message) {
         mProgressDialog.setIndeterminate(true);
-//        mProgressDialog.setTitle("Đang ký File PDF");
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("Đang ký File PDF!");
+        mProgressDialog.setMessage(message);
         mProgressDialog.show();
     }
 }
