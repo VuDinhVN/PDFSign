@@ -9,7 +9,7 @@
 
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context="vu.dinh.dsa.MainActivity">
+    tools:context="vu.dinh.dsa.Sign">
 
     <FrameLayout
         android:id="@+id/file_name_frame"
@@ -50,12 +50,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="190dp">
+        android:layout_marginTop="120dp">
 
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="match_parent"
-            android:layout_height="390dp" />
+            android:layout_height="420dp" />
     </LinearLayout>
     <TextView
         android:id="@+id/tv_reason_title"
@@ -141,7 +141,7 @@
     <com.simplify.ink.InkView
         android:id="@+id/ink"
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
+        android:layout_height="120dp"
         android:layout_above="@+id/buttonPanel"
         android:layout_marginBottom="8dp"
         android:background="@drawable/border"
@@ -155,7 +155,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/iv_clean"
@@ -178,16 +178,6 @@
             android:layout_marginRight="3dp"
             android:text="Ký PDF"
             android:textColor="@android:color/white" />
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button_enc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/colored_button"
-            android:layout_marginLeft="3dp"
-            android:text="Mã Hoá"
-            android:textColor="@android:color/white" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -205,45 +195,8 @@
             android:text="Nhập thông tin để ký PDF"
             android:textSize="16sp"
             android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="Chọn File Certificate  để mã hoá file PDF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="50dp"
-            />
 
 
-
-        <FrameLayout
-            android:id="@+id/file_name_frame_cer"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/border"
-            android:layout_marginBottom="20dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_file_name_cer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
-                android:hint="Chọn File Certificate"
-                android:textColorHint="#ababab"
-                android:textSize="14sp"
-                android:textStyle="italic" />
-
-
-            <ImageView
-                android:id="@+id/iv_browse_cer"
-                android:layout_width="35dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:src="@mipmap/cer" />
-        </FrameLayout>
 
     </LinearLayout>
 

@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="vu.dinh.dsa.MainActivity" >
+        <activity android:name="vu.dinh.dsa.Sign" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,6 +21,15 @@
         </activity>
 
         <activity android:name="vu.dinh.dsa.DoneActivity">
+
+        </activity>
+        <activity android:name="vu.dinh.dsa.ChooseActivity">
+
+        </activity>
+        <activity android:name="vu.dinh.dsa.Enc">
+
+        </activity>
+        <activity android:name="vu.dinh.dsa.Dyc">
 
         </activity>
     </application>
